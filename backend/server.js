@@ -17,14 +17,16 @@ const errorMiddleware = require('./middleware/errorMiddleware');
 
 const app = express();
 
-// CORS — whitelist the frontend dev origin(s)
+// CORS — allow the configured frontend origin(s). Auth uses Bearer JWTs
+// (not cookies), so `credentials` stays off and no wildcard origin is used.
 const allowedOrigins = [
   process.env.CLIENT_URL,
+  'https://frontend-tuta.vercel.app',
   'http://localhost:5173',
   'http://127.0.0.1:5173',
 ]
   .filter(Boolean)
-  .map((origin) => origin.trim());
+  .map((origin) => origin.trim().replace(/\/+$/, ''));
 
 app.use(cors({ origin: allowedOrigins }));
 

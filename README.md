@@ -272,14 +272,24 @@ cd backend && npm test
 
 ## Deployment
 
-1. **Frontend** — build the static bundle (`npm run build` in `frontend/` produces
-   `dist/`) and serve it from any static host (Vercel/Netlify/nginx). Set
-   `VITE_API_URL` to the deployed API URL before building.
-2. **Backend** — run `node server.js` (or `npm start`) behind a process manager
-   (PM2/systemd). Set `MONGO_URI`, `JWT_SECRET`, and `CLIENT_URL` (the deployed
-   frontend origin, used for CORS) in the environment.
+This project is deployed with the frontend on Vercel and the backend on Render.
+
+**Frontend (Vercel)** — https://frontend-tuta.vercel.app/
+- Environment variable: `VITE_API_URL=https://evoting-damr.onrender.com/api`
+
+**Backend (Render)** — https://evoting-damr.onrender.com
+- `NODE_ENV=production`
+- `CLIENT_URL=https://frontend-tuta.vercel.app`
+- `MONGO_URI=<production MongoDB connection string>`
+- `JWT_SECRET=<production secret>`
+- `ADMIN_NAME` / `ADMIN_EMAIL` / `ADMIN_PASSWORD` (for seeding an admin)
+
+Steps:
+
+1. **Frontend** — run `npm run build` (reads `VITE_API_URL` at build time) and deploy `dist/`.
+2. **Backend** — run `node server.js` (or `npm start`); Render runs the `start` command automatically.
 3. Seed an admin on the production database with `npm run create-admin`.
-4. Use HTTPS in production so JWTs are not sent in cleartext.
+4. Use HTTPS (both platforms provide it by default).
 
 ## Notes
 

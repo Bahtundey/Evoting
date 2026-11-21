@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { getToken, clearToken } from './tokenStore.js';
 
-// Backend base URL, configurable via VITE_API_URL in frontend/.env
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5050/api';
-
+// Backend base URL. MUST be set via VITE_API_URL (frontend/.env for local dev,
+// the Vercel environment in production). No localhost fallback so a missing
+// variable fails loudly instead of silently pointing at localhost.
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
